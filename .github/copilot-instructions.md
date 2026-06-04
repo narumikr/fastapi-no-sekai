@@ -10,11 +10,12 @@
 - アーキテクチャレイヤー
   - **レイヤー構成**: views, adapter, application, domain
     - 同一レイヤーへの参照を許可
-    - views > applicationへの参照を許可
-    - views > domainへの参照を許可
-    - adapter > applicationへの参照を許可
-    - adapter > domainへの参照を許可
-    - application > domainへの参照を許可
+      - ただしcontexts/shared/からcontexts/{resource}/への参照は許可しない
+    - viewsからapplicationへの参照を許可
+    - viewsからdomainへの参照を許可
+    - adapterからapplicationへの参照を許可
+    - adapterからdomainへの参照を許可
+    - applicationからdomainへの参照を許可
   - **adapter**
     - WebAPIとしてHTTPリクエストを受け取り、内部のビジネスロジックであるapplication層に処理を委譲する役割を担う
     - controller, mapper, infrastructure, schema, viewsなどのコンポーネントを含む
