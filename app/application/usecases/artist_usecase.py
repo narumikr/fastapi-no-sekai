@@ -1,6 +1,6 @@
 from app.application.commands.artist_command import CreateArtistCommand
 from app.application.dtos.artist_dtos import ArtistDto
-from app.application.mappers.artist_outbound_mapper import ArtistOutboundMapper
+from app.application.mappers.artist_mapper import ArtistMapper
 from app.contexts.artist.artist_models import Artist
 from app.contexts.artist.artist_repository import ArtistRepository
 
@@ -32,4 +32,4 @@ class ArtistUseCase:
         saved_artist = self.artist_repository.save_artist(new_artist)
         self.db.commit()
 
-        return ArtistOutboundMapper.to_artist_dto(saved_artist)
+        return ArtistMapper.to_artist_dto(saved_artist)

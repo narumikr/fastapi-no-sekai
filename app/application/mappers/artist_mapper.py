@@ -1,7 +1,7 @@
 from app.application.dtos.artist_dtos import ArtistDto
 
 
-class ArtistOutboundMapper:
+class ArtistMapper:
     """ドメインモデルから内部DTOへの変換などアウトバウンドマッピングを行うクラス"""
 
     @staticmethod
