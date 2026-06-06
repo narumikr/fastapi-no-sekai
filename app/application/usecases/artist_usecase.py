@@ -1,3 +1,5 @@
+from sqlalchemy.orm import Session
+
 from app.application.commands.artist_command import CreateArtistCommand
 from app.application.dtos.artist_dtos import ArtistDto
 from app.application.mappers.artist_mapper import ArtistMapper
@@ -12,9 +14,9 @@ class ArtistUseCase:
     - create_artist_usecase: 新規アーティストの登録
     """
 
-    def __init__(self, artist_repository: ArtistRepository):
+    def __init__(self, artist_repository: ArtistRepository, db: Session):
         self.artist_repository = artist_repository
-        self.db = artist_repository.db
+        self.db = db
 
     def create_artist_usecase(self, artist: CreateArtistCommand) -> ArtistDto:
         """新規アーティストの登録ユースケース

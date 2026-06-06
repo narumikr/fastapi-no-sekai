@@ -23,7 +23,7 @@ async def create_artist(
     - ArtistResponse: 作成されたアーティストの情報を含むレスポンス
     """
     repository = ArtistRepositoryImpl(db=db)
-    usecase = ArtistUseCase(artist_repository=repository)
+    usecase = ArtistUseCase(artist_repository=repository, db=db)
 
     command = ArtistMapper.to_create_command(request)
     artist_dto = usecase.create_artist_usecase(command)

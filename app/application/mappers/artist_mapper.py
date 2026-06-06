@@ -9,6 +9,12 @@ class ArtistMapper:
     @staticmethod
     def to_artist_dto(artist: Artist) -> ArtistDto:
         """ドメインモデルをアーティストの内部DTOに変換"""
+
+        assert artist.id is not None, "自動採番されているのでIDは存在する。"
+        assert artist.meta_info is not None, (
+            "メタ情報も自動でセットされるので存在する。"
+        )
+
         return ArtistDto(
             id=artist.id,
             artist_name=artist.artist_name,
