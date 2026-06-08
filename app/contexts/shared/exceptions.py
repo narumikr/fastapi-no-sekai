@@ -8,8 +8,8 @@ class ErrorDetails:
     エラーの詳細情報はフィールド名とメッセージを含むことができる
     """
 
-    field: str | None = None  # エラーが発生したフィールド名
     message: str  # エラーの説明
+    field: str | None = None  # エラーが発生したフィールド名
 
 
 class BussinessException(Exception):

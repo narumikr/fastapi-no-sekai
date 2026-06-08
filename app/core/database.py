@@ -38,12 +38,12 @@ class BaseEntity(Base):
     """
 
     created_at = Column(
-        DateTime, default=lambda: datetime.now(get_timezone()), nullable=False
+        DateTime(timezone=True), default=lambda: datetime.now(get_timezone()), nullable=False
     )
     created_by = Column(String(50), default="system", nullable=False)
 
     last_updated_at = Column(
-        DateTime,
+        DateTime(timezone=True),
         default=lambda: datetime.now(get_timezone()),
         onupdate=lambda: datetime.now(get_timezone()),
         nullable=False,
@@ -52,7 +52,7 @@ class BaseEntity(Base):
         String(50), default="system", onupdate="system", nullable=False
     )
 
-    deleted_at = Column(DateTime, nullable=True)
+    deleted_at = Column(DateTime(timezone=True), nullable=True)
     deleted_by = Column(String(50), nullable=True)
 
     version = Column(
