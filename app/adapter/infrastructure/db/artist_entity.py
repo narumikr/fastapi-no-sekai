@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Integer, String
+from sqlalchemy.orm import Mapped, mapped_column
 
 from app.core.database import BaseEntity
 
@@ -21,8 +22,10 @@ class ArtistEntity(BaseEntity):
 
     __tablename__ = "artists"
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
 
-    artist_name = Column(String(50), nullable=False, unique=True, index=True)
+    artist_name: Mapped[str] = mapped_column(
+        String(50), nullable=False, unique=True, index=True
+    )
 
-    unit_name = Column(String(50), nullable=True)
+    unit_name: Mapped[str | None] = mapped_column(String(50), nullable=True)

@@ -3,8 +3,8 @@ from collections.abc import Generator
 from datetime import datetime
 
 from dotenv import load_dotenv
-from sqlalchemy import Column, DateTime, Integer, String, create_engine
-from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
+from sqlalchemy import DateTime, Integer, String, create_engine
+from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, sessionmaker
 
 from app.core.config import get_timezone
 
@@ -37,25 +37,25 @@ class BaseEntity(Base):
     - version: 楽観ロックのバージョン番号
     """
 
-    created_at = Column(
+    created_at: Mapped[datetime] = mapped_column(
         DateTime, default=lambda: datetime.now(get_timezone()), nullable=False
     )
-    created_by = Column(String(50), default="system", nullable=False)
+    created_by: Mapped[str] = mapped_column(String(50), default="system", nullable=False)
 
-    last_updated_at = Column(
+    last_updated_at: Mapped[datetime] = mapped_column(
         DateTime,
         default=lambda: datetime.now(get_timezone()),
         onupdate=lambda: datetime.now(get_timezone()),
         nullable=False,
     )
-    last_updated_by = Column(
+    last_updated_by: Mapped[str] = mapped_column(
         String(50), default="system", onupdate="system", nullable=False
     )
 
-    deleted_at = Column(DateTime, nullable=True)
-    deleted_by = Column(String(50), nullable=True)
+    deleted_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    deleted_by: Mapped[str | None] = mapped_column(String(50), nullable=True)
 
-    version = Column(
+    version: Mapped[int] = mapped_column(
         Integer,
         default=0,
         nullable=False,

@@ -3,7 +3,6 @@ from app.application.dtos.artist_dtos import ArtistDto
 from app.application.mappers.artist_mapper import ArtistMapper
 from app.application.unit_of_work import UnitOfWork
 from app.contexts.artist.artist_models import Artist
-from app.contexts.artist.artist_repository import ArtistRepository
 
 
 class ArtistUseCase:
@@ -13,8 +12,7 @@ class ArtistUseCase:
     - create_artist_usecase: 新規アーティストの登録
     """
 
-    def __init__(self, artist_repository: ArtistRepository, unit_of_work: UnitOfWork):
-        self.artist_repository = artist_repository
+    def __init__(self, unit_of_work: UnitOfWork):
         self.unit_of_work = unit_of_work
 
     def create_artist_usecase(self, artist: CreateArtistCommand) -> ArtistDto:
@@ -31,7 +29,7 @@ class ArtistUseCase:
             unit_name=artist.unit_name,
         )
         try:
-            saved_artist = self.artist_repository.save_artist(new_artist)
+            saved_artist = self.unit_of_work.artists.save_artist(new_artist)
             self.unit_of_work.commit()
         except Exception:
             self.unit_of_work.rollback()

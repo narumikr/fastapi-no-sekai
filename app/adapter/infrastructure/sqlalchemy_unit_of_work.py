@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 
+from app.adapter.infrastructure.artist_repository_impl import ArtistRepositoryImpl
 from app.application.unit_of_work import UnitOfWork
 
 
@@ -12,6 +13,7 @@ class SqlAlchemyUnitOfWork(UnitOfWork):
 
     def __init__(self, db: Session):
         self.db = db
+        self.artists = ArtistRepositoryImpl(db)
 
     def commit(self) -> None:
         """セッションの変更をコミットする"""
