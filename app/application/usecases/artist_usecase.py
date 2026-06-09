@@ -1,9 +1,9 @@
 from app.application.commands.artist_command import CreateArtistCommand
 from app.application.dtos.artist_dtos import ArtistDto
 from app.application.mappers.artist_mapper import ArtistMapper
+from app.application.unit_of_work import UnitOfWork
 from app.contexts.artist.artist_models import Artist
 from app.contexts.artist.artist_repository import ArtistRepository
-from app.contexts.shared.unit_of_work import UnitOfWork
 
 
 class ArtistUseCase:
@@ -30,7 +30,11 @@ class ArtistUseCase:
             artist_name=artist.artist_name,
             unit_name=artist.unit_name,
         )
-        saved_artist = self.artist_repository.save_artist(new_artist)
-        self.unit_of_work.commit()
+        try:
+            saved_artist = self.artist_repository.save_artist(new_artist)
+            self.unit_of_work.commit()
+        except Exception:
+            self.unit_of_work.rollback()
+            raise
 
         return ArtistMapper.to_artist_dto(saved_artist)
