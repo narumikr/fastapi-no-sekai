@@ -1,7 +1,7 @@
 from sqlalchemy import Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 
-from app.core.database import BaseEntity
+from app.adapter.infrastructure.db.base_entity import BaseEntity
 
 
 class ArtistEntity(BaseEntity):
