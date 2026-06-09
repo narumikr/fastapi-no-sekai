@@ -1,10 +1,9 @@
-from sqlalchemy.orm import Session
-
 from app.application.commands.artist_command import CreateArtistCommand
 from app.application.dtos.artist_dtos import ArtistDto
 from app.application.mappers.artist_mapper import ArtistMapper
 from app.contexts.artist.artist_models import Artist
 from app.contexts.artist.artist_repository import ArtistRepository
+from app.contexts.shared.unit_of_work import UnitOfWork
 
 
 class ArtistUseCase:
@@ -14,9 +13,9 @@ class ArtistUseCase:
     - create_artist_usecase: 新規アーティストの登録
     """
 
-    def __init__(self, artist_repository: ArtistRepository, db: Session):
+    def __init__(self, artist_repository: ArtistRepository, unit_of_work: UnitOfWork):
         self.artist_repository = artist_repository
-        self.db = db
+        self.unit_of_work = unit_of_work
 
     def create_artist_usecase(self, artist: CreateArtistCommand) -> ArtistDto:
         """新規アーティストの登録ユースケース
@@ -32,6 +31,6 @@ class ArtistUseCase:
             unit_name=artist.unit_name,
         )
         saved_artist = self.artist_repository.save_artist(new_artist)
-        self.db.commit()
+        self.unit_of_work.commit()
 
         return ArtistMapper.to_artist_dto(saved_artist)
