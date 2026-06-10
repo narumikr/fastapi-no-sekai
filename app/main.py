@@ -2,10 +2,11 @@ import os
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from sqlalchemy import engine
 
 from app.adapter.controllers.artist_controller import router as artist_router
-from app.core.database import Base, engine
-
+from app.adapter.infrastructure.db.base_entity import Base
+from app.core.database import engine
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
