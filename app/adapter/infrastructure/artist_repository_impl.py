@@ -1,6 +1,8 @@
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.adapter.infrastructure.db.artist_entity import ArtistEntity
+from app.contexts.artist.artist_exception import ArtistDuplicateNameException, ArtistError
 from app.contexts.artist.artist_models import Artist
 from app.contexts.artist.artist_repository import ArtistRepository
 from app.contexts.shared.meta_models import MetaModel
@@ -30,7 +32,10 @@ class ArtistRepositoryImpl(ArtistRepository):
             unit_name=artist.unit_name,
         )
         self.db.add(artist_entity)
-        self.db.flush()
+        try:
+            self.db.flush()
+        except IntegrityError:
+            raise ArtistDuplicateNameException(ArtistError.DUPLICATE_NAME)
 
         meta_info = MetaModel(
             created_at=artist_entity.created_at,
