@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 
-from app.core.schemas import MetaInfo
+from app.adapter.schemas.meta_schema import MetaInfo
 
 
 class CreateArtistRequest(BaseModel):

@@ -1,7 +1,7 @@
 from app.adapter.schemas.artist_schema import ArtistResponse, CreateArtistRequest
 from app.application.commands.artist_command import CreateArtistCommand
 from app.application.dtos.artist_dtos import ArtistDto
-from app.core.schemas import MetaInfo
+from app.adapter.schemas.meta_schema import MetaInfo
 
 
 class ArtistMapper:
