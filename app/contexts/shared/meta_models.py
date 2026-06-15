@@ -24,6 +24,10 @@ class MetaModel(AuditModel):
     """メタモデルクラス
 
     Arguments:
+    - created_at: 作成日時
+    - created_by: 作成者
+    - last_updated_at: 最終更新日時
+    - last_updated_by: 最終更新者
     - deleted_at: 削除日時
     - deleted_by: 削除者
     - version: 楽観ロックのバージョン番号

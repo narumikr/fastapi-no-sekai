@@ -1,4 +1,4 @@
-<img src="https://capsule-render.vercel.app/api?type=waving&height=250&color=0:ddaacc,100:ffc096&text=Hello%20SEKAI&fontAlign=45&fontAlignY=40&fontSize=50&animation=fadeIn&desc=Shared%20default%20GitHub%20assets&descAlign=65&descAlignY=55&fontColor=f5f5f7&descSize=-1&reversal=true&section=header&textBg=false" />
+<img src="https://capsule-render.vercel.app/api?type=waving&height=250&color=0:ddaacc,100:ffc096&text=Hello%20SEKAI&fontAlign=45&fontAlignY=40&fontSize=50&animation=fadeIn&desc=FastAPI%20Template%20Repo&descAlign=65&descAlignY=55&fontColor=f5f5f7&descSize=-1&reversal=true&section=header&textBg=false" />
 
 # **_Fast API no SEKAI_**
 
