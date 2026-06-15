@@ -1,6 +1,19 @@
-# fastapi-no-sekai
+<img src="https://capsule-render.vercel.app/api?type=waving&height=250&color=0:ddaacc,100:ffc096&text=Hello%20SEKAI&fontAlign=45&fontAlignY=40&fontSize=50&animation=fadeIn&desc=FastAPI%20Template%20Repo&descAlign=65&descAlignY=55&fontColor=f5f5f7&descSize=-1&reversal=true&section=header&textBg=false" />
 
-FastAPI + SQLAlchemy + PostgreSQL で構築した Web API です。
+# **_Fast API no SEKAI_**
+
+![welcome comment](https://readme-typing-svg.herokuapp.com?color=%23ff6699&width=500&lines=Hello+there!!+Thanks+for+stopping+by+🎵;Welcome+to+my+SEKAI+💫;)
+
+FastAPIのプロジェクト開始テンプレートリポジトリ
+
+#### **_Tech Stack_**
+
+[![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=fff)](#)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009485.svg?logo=fastapi&logoColor=white)](#)
+[![Pydantic](https://img.shields.io/badge/Pydantic-E92063?logo=Pydantic&logoColor=white)](#)
+[![Pytest](https://img.shields.io/badge/Pytest-fff?logo=pytest&logoColor=000)](#)
+[![Postgres](https://img.shields.io/badge/Postgres-%23316192.svg?logo=postgresql&logoColor=white)](#)
+[![Swagger](https://img.shields.io/badge/Swagger-85EA2D?logo=swagger&logoColor=173647)](#)
 
 ## 必要な環境
 
@@ -50,17 +63,41 @@ brew services start postgresql@16
 
 ## セットアップ
 
-### 1. 依存パッケージのインストール
+### 1. just のインストール
+
+**Mac**
+```bash
+brew install just
+```
+
+**Windows**
+```powershell
+winget install Casey.Just
+```
+
+---
+
+### 2. 依存パッケージのインストール
 
 ```bash
+# just コマンドで実行できます
+just sync
+
+# または直接 uv で実行
 uv sync
 ```
 
-### 2. 環境変数の設定
+---
+
+### 3. 環境変数の設定
 
 `.env.example` をコピーして `.env` を作成し、DB 接続情報を設定してください。
 
 ```bash
+# just コマンドでも実行できます
+just setup-env
+
+# または手動で
 cp .env.example .env
 ```
 
@@ -71,13 +108,15 @@ DATABASE_NAME=your_db
 DATABASE_USER=your_user
 DATABASE_PASSWORD=your_password
 
-APP_TIMEZONE=Asia/Tokyo
+APP_TIMEZONE=UTC
 ```
+
+---
 
 ## App の起動
 
 ```bash
-uvicorn app.main:app --reload
+just start
 ```
 
 起動後、以下の URL にアクセスできます。
@@ -89,21 +128,17 @@ uvicorn app.main:app --reload
 
 ## 開発コマンド
 
-### リントとフォーマット
-
-```bash
-# チェックのみ
-uv run ruff check .
-
-# 自動修正
-uv run ruff check . --fix
-
-# フォーマット
-uv run ruff format .
-```
-
-### pre-commit の設定
-
-```bash
-uv run pre-commit install
-```
+| コマンド | 内容 |
+|---|---|
+| `just sync` | 依存パッケージのインストール |
+| `just setup` | 初回セットアップ（sync + pre-commit hooks） |
+| `just start` | アプリ起動 |
+| `just lint` | lint チェック |
+| `just lint-fix` | lint 自動修正 |
+| `just format` | フォーマット適用 |
+| `just format-check` | フォーマットチェック（変更なし） |
+| `just fix` | lint 修正 + フォーマット適用 |
+| `just check` | lint + フォーマットチェック |
+| `just db-start` | DB（Docker）起動 |
+| `just db-stop` | DB（Docker）停止 |
+| `just db-logs` | DB ログ確認 |
