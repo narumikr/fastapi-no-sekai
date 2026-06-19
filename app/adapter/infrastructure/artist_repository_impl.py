@@ -1,9 +1,13 @@
+from psycopg2.errors import UniqueViolation
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.adapter.infrastructure.db.artist_entity import ArtistEntity
 from app.adapter.mappers.meta_mapper import MetaMapper
-from app.contexts.artist.artist_exception import ArtistDuplicateNameException, ArtistError
+from app.contexts.artist.artist_exception import (
+    ArtistDuplicateNameException,
+    ArtistError,
+)
 from app.contexts.artist.artist_models import Artist
 from app.contexts.artist.artist_repository import ArtistRepository
 
@@ -34,8 +38,10 @@ class ArtistRepositoryImpl(ArtistRepository):
         self.db.add(artist_entity)
         try:
             self.db.flush()
-        except IntegrityError:
-            raise ArtistDuplicateNameException(ArtistError.DUPLICATE_NAME)
+        except IntegrityError as e:
+            if isinstance(e.orig, UniqueViolation):
+                raise ArtistDuplicateNameException(ArtistError.DUPLICATE_NAME) from e
+            raise
 
         self.db.refresh(artist_entity)
         meta_info = MetaMapper.to_meta_model(artist_entity)

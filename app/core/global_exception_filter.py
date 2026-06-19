@@ -14,9 +14,10 @@ EXCEPTION_STATUS_MAP: dict[type[BussinessException], int] = {
 }
 
 
-async def business_exception_handler(
-    request: Request, exc: BussinessException
-) -> JSONResponse:
+async def business_exception_handler(request: Request, exc: Exception) -> JSONResponse:
+    if not isinstance(exc, BussinessException):
+        return await unhandled_exception_handler(request, exc)
+
     status_code = EXCEPTION_STATUS_MAP.get(type(exc), 400)
     body = ErrorResponse(
         code=exc.code,
