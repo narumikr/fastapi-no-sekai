@@ -6,6 +6,8 @@ from fastapi import FastAPI
 from app.adapter.controllers.artist_controller import router as artist_router
 from app.adapter.infrastructure.db.base_entity import Base
 from app.core.database import engine
+from app.core.global_exception_filter import setup_exception_handlers
+
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
@@ -18,4 +20,5 @@ async def lifespan(_: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
+setup_exception_handlers(app)
 app.include_router(artist_router, prefix="/artists", tags=["artists"])
