@@ -20,6 +20,10 @@ setup-hooks:
 # 初回セットアップ（sync + hooks）
 setup: sync setup-hooks
 
+# テスト実行
+test:
+    uv run pytest tests/ -v
+
 # --- Lint ---
 
 # lint チェック
