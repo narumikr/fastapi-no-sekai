@@ -14,21 +14,16 @@ class ArtistError(Enum):
     DUPLICATE_NAME = "同じアーティスト名が既に存在しています。"
 
 
-class ArtistBadRequestException(BussinessException):
-    """アーティストドメインのビジネス例外クラス
-
-    Status Code: 400 Bad Request
-    """
+class ArtistException(BussinessException):
+    """アーティストドメイン例外の基底クラス"""
 
     def __init__(self, error: ArtistError, details: list[ErrorDetails] | None = None):
         super().__init__(code=error.name, message=error.value, details=details)
 
 
-class ArtistDuplicateNameException(BussinessException):
-    """アーティストドメインの重複エラークラス
+class ArtistBadRequestException(ArtistException):
+    """アーティストのバリデーションエラー"""
 
-    Status Code: 409 Conflict
-    """
 
-    def __init__(self, error: ArtistError, details: list[ErrorDetails] | None = None):
-        super().__init__(code=error.name, message=error.value, details=details)
+class ArtistDuplicateNameException(ArtistException):
+    """アーティスト名の重複エラー"""
