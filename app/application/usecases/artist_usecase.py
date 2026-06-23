@@ -28,11 +28,6 @@ class ArtistUseCase:
             artist_name=artist.artist_name,
             unit_name=artist.unit_name,
         )
-        try:
-            saved_artist = self.unit_of_work.artists.save_artist(new_artist)
-            self.unit_of_work.commit()
-        except Exception:
-            self.unit_of_work.rollback()
-            raise
-
+        saved_artist = self.unit_of_work.artists.save_artist(new_artist)
+        self.unit_of_work.commit()
         return ArtistMapper.to_artist_dto(saved_artist)
