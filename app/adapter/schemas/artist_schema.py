@@ -4,8 +4,12 @@ from app.adapter.schemas.meta_schema import MetaInfo
 
 
 class CreateArtistRequest(BaseModel):
-    artist_name: str = Field(..., max_length=50, example="Leo/need")
-    unit_name: str | None = Field(None, max_length=50, example="Leo/need")
+    artist_name: str = Field(
+        ..., max_length=50, json_schema_extra={"example": "Leo/need"}
+    )
+    unit_name: str | None = Field(
+        None, max_length=50, json_schema_extra={"example": "Leo/need"}
+    )
 
 
 class ArtistResponse(BaseModel):
