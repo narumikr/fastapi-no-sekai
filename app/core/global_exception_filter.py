@@ -1,5 +1,8 @@
+from typing import cast
+
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
+from starlette.types import ExceptionHandler
 
 from app.adapter.schemas.error_schema import ErrorDetail, ErrorResponse
 from app.contexts.artist.artist_exception import (
@@ -35,5 +38,8 @@ async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONR
 
 
 def setup_exception_handlers(app: FastAPI) -> None:
-    app.add_exception_handler(BussinessException, business_exception_handler)
+    app.add_exception_handler(
+        BussinessException,
+        cast(ExceptionHandler, business_exception_handler),
+    )
     app.add_exception_handler(Exception, unhandled_exception_handler)
