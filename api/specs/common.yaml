@@ -1,0 +1,109 @@
+components:
+  schemas:
+    AuditInfo:
+      type: object
+      description: 監査用レスポンスモデル
+      required:
+        - created_at
+        - created_by
+        - last_updated_at
+        - last_updated_by
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: 作成日時
+        created_by:
+          type: string
+          description: 作成者
+        last_updated_at:
+          type: string
+          format: date-time
+          description: 最終更新日時
+        last_updated_by:
+          type: string
+          description: 最終更新者
+
+    MetaInfo:
+      description: メタ用レスポンスモデル（監査情報 + 論理削除 + 楽観ロック）
+      allOf:
+        - $ref: '#/components/schemas/AuditInfo'
+        - type: object
+          required:
+            - deleted_at
+            - deleted_by
+            - version
+          properties:
+            deleted_at:
+              type: string
+              format: date-time
+              nullable: true
+              description: 削除日時
+            deleted_by:
+              type: string
+              nullable: true
+              description: 削除者
+            version:
+              type: integer
+              description: 楽観ロックのバージョン番号
+
+    ErrorDetail:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: エラー詳細メッセージ
+        field:
+          type: string
+          nullable: true
+          description: エラー対象のフィールド名
+
+    ErrorResponse:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          description: エラーコード
+        message:
+          type: string
+          description: エラーメッセージ
+        details:
+          type: array
+          description: エラー詳細リスト
+          default: []
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+
+  responses:
+    BadRequest:
+      description: リクエストが不正
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    UnprocessableEntity:
+      description: リクエストボディのバリデーションエラー
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    Conflict:
+      description: リソースの競合
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+    InternalServerError:
+      description: 予期しないサーバーエラー
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
