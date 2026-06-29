@@ -14,9 +14,11 @@ from collections.abc import Generator
 from pathlib import Path
 
 import pytest
-from sqlalchemy import Engine, create_engine, text
+from sqlalchemy import Engine, MetaData, create_engine, text
 from sqlalchemy.orm import Session, sessionmaker
 from testcontainers.postgres import PostgresContainer
+
+from app.core.config import TIMEZONE_NAME
 
 
 def _configure_docker_host_for_colima() -> None:
@@ -66,7 +68,10 @@ def _engine(_postgres_container: PostgresContainer) -> Engine:
         f"@{os.environ['DATABASE_HOST']}:{os.environ['DATABASE_PORT']}"
         f"/{os.environ['DATABASE_NAME']}"
     )
-    engine = create_engine(url)
+    engine = create_engine(
+        url,
+        connect_args={"options": f"-c timezone={TIMEZONE_NAME}"},
+    )
     Base.metadata.create_all(bind=engine)
     return engine
 
@@ -76,12 +81,33 @@ def _session_factory(_engine: Engine) -> sessionmaker[Session]:
     return sessionmaker(autocommit=False, autoflush=False, bind=_engine)
 
 
+@pytest.fixture(scope="session")
+def _metadata() -> MetaData:
+    """`Base.metadata` を返す
+
+    TRUNCATE 対象テーブルを動的に取得するため、ORM エンティティを登録した
+    `Base.metadata` を session スコープで保持する。
+    """
+    import app.adapter.infrastructure.db  # noqa: F401
+    from app.adapter.infrastructure.db.base_entity import Base
+
+    return Base.metadata
+
+
 @pytest.fixture(autouse=True)
-def _truncate_tables(_engine: Engine) -> Generator[None]:
-    """テストごとにテーブルを TRUNCATE して独立性を担保する"""
+def _truncate_tables(_engine: Engine, _metadata: MetaData) -> Generator[None]:
+    """テストごとにテーブルを TRUNCATE して独立性を担保する
+
+    `Base.metadata` から対象テーブルを取得することで、テーブル追加時に
+    本 fixture をメンテし忘れてもテスト間の状態漏れが発生しないようにする。
+    """
     yield
+    table_names = [table.name for table in _metadata.sorted_tables]
+    if not table_names:
+        return
+    quoted = ", ".join(f'"{name}"' for name in table_names)
     with _engine.connect() as conn:
-        conn.execute(text("TRUNCATE TABLE artists RESTART IDENTITY CASCADE"))
+        conn.execute(text(f"TRUNCATE TABLE {quoted} RESTART IDENTITY CASCADE"))
         conn.commit()
 
 
