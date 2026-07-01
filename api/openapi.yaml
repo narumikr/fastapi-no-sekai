@@ -1,0 +1,17 @@
+openapi: 3.0.3
+info:
+  title: fastapi-no-sekai API
+  description: FastAPI + MVC のサンプルプロジェクト API 仕様
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8000
+    description: ローカル開発環境
+
+tags:
+  - name: artists
+    description: アーティスト関連 API
+
+paths:
+  /artists:
+    $ref: './specs/artist.yaml#/paths/~1artists'

@@ -16,6 +16,7 @@ dev = [
     "pre-commit>=4.0",
     "pytest>=8.0",
     "httpx>=0.27",
+    "testcontainers[postgres]>=4.7",
 ]
 
 [tool.ruff]
@@ -27,3 +28,7 @@ select = ["E", "F", "I", "UP"]
 
 [tool.ruff.format]
 quote-style = "double"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
