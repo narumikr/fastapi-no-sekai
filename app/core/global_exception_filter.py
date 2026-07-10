@@ -1,3 +1,4 @@
+import logging
 from typing import cast
 
 from fastapi import FastAPI, Request
@@ -11,6 +12,8 @@ from app.contexts.artist.artist_exception import (
 )
 from app.contexts.shared.exceptions import BussinessException
 
+logger = logging.getLogger(__name__)
+
 EXCEPTION_STATUS_MAP: dict[type[BussinessException], int] = {
     ArtistBadRequestException: 400,
     ArtistDuplicateNameException: 409,
@@ -21,6 +24,14 @@ async def business_exception_handler(
     request: Request, exc: BussinessException
 ) -> JSONResponse:
     status_code = EXCEPTION_STATUS_MAP.get(type(exc), 400)
+    logger.warning(
+        "業務例外を捕捉しました: %s %s status=%d code=%s message=%s",
+        request.method,
+        request.url.path,
+        status_code,
+        exc.code,
+        exc.message,
+    )
     body = ErrorResponse(
         code=exc.code,
         message=exc.message,
@@ -30,6 +41,11 @@ async def business_exception_handler(
 
 
 async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONResponse:
+    logger.exception(
+        "予期しない例外が発生しました: %s %s",
+        request.method,
+        request.url.path,
+    )
     body = ErrorResponse(
         code="INTERNAL_SERVER_ERROR",
         message="予期しないエラーが発生しました。",
