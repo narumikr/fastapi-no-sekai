@@ -78,9 +78,7 @@ class TestCreateArtistUseCaseLogging:
         ]
         assert len(complete_logs) == 1
 
-    def test_開始ログにユニット名も含まれる(
-        self, app_caplog: pytest.LogCaptureFixture
-    ):
+    def test_開始ログにユニット名も含まれる(self, app_caplog: pytest.LogCaptureFixture):
         usecase = ArtistUseCase(_FakeUnitOfWork())
         command = CreateArtistCommand(artist_name="星乃一歌", unit_name="Leo/need")
 

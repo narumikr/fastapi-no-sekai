@@ -44,9 +44,7 @@ class TestBusinessExceptionLogging:
         asyncio.run(business_exception_handler(request, exc))
 
         msg = next(
-            r.getMessage()
-            for r in app_caplog.records
-            if r.levelno == logging.WARNING
+            r.getMessage() for r in app_caplog.records if r.levelno == logging.WARNING
         )
         assert "POST" in msg
         assert "/artists" in msg
@@ -63,9 +61,7 @@ class TestBusinessExceptionLogging:
         asyncio.run(business_exception_handler(request, exc))
 
         msg = next(
-            r.getMessage()
-            for r in app_caplog.records
-            if r.levelno == logging.WARNING
+            r.getMessage() for r in app_caplog.records if r.levelno == logging.WARNING
         )
         assert "409" in msg
         assert "DUPLICATE_NAME" in msg
@@ -82,9 +78,7 @@ class TestBusinessExceptionLogging:
         asyncio.run(business_exception_handler(request, exc))
 
         msg = next(
-            r.getMessage()
-            for r in app_caplog.records
-            if r.levelno == logging.WARNING
+            r.getMessage() for r in app_caplog.records if r.levelno == logging.WARNING
         )
         assert "400" in msg
 
