@@ -41,10 +41,11 @@ async def business_exception_handler(
 
 
 async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONResponse:
-    logger.exception(
+    logger.error(
         "予期しない例外が発生しました: %s %s",
         request.method,
         request.url.path,
+        exc_info=exc,
     )
     body = ErrorResponse(
         code="INTERNAL_SERVER_ERROR",
