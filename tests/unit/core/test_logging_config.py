@@ -45,6 +45,7 @@ class TestLogLevelEnv:
             importlib.reload(logging_config)
             assert logging_config.LOG_LEVEL == "INFO"
         finally:
+            monkeypatch.delenv("LOG_LEVEL", raising=False)
             importlib.reload(logging_config)
 
     def test_LOG_LEVEL_環境変数でレベルが変更できる(
@@ -56,6 +57,7 @@ class TestLogLevelEnv:
             assert logging_config.LOG_LEVEL == "DEBUG"
             assert logging_config.LOGGING_CONFIG["loggers"]["app"]["level"] == "DEBUG"
         finally:
+            monkeypatch.delenv("LOG_LEVEL", raising=False)
             importlib.reload(logging_config)
 
 
